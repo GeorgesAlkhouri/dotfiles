@@ -92,6 +92,8 @@ Plug 'nvim-lua/completion-nvim'
 "Plug 'ervandew/supertab'
 " Status Bar
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'rafi/awesome-vim-colorschemes'
 " Pair edit with Brackets
 Plug 'jiangmiao/auto-pairs'
 "" Linting
@@ -168,3 +170,6 @@ elseif $TERM =~ '^\(xterm\)\(-.*\)\?$'
        set notermguicolors
      endif
 endif
+
+colorscheme gruvbox
+let g:airline_theme='gruvbox'
