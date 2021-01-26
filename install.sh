@@ -17,22 +17,42 @@ stowit() {
     stow -v -R -t "${usr}" "${app}"
 }
 
+applyit() {
+    declare -a list=("${!1}")
+    for tuple in "${list[@]}"; do
+	    path=$(echo "$tuple" | cut -d";" -f1)
+	    app=$(echo "$tuple" | cut -d";" -f2)
+
+	    echo "Linking to $path"
+	    mkdir -p "$path"
+	    stowit "$path" "$app"
+    done
+}
+
 base=(
+    "$HOME/.autoload;autoload"
     "$HOME/.config/nvim;nvim"
     "$HOME;tmux"
     "$HOME/.tmuxinator;tmuxinator"
 )
 
+mac=(
+    "$HOME;mac__zprezto"
+)
+
+echo ""
+echo "Stowing base"
 echo ""
 
-for tuple in "${base[@]}"; do
-    path=$(echo "$tuple" | cut -d";" -f1)
-    app=$(echo "$tuple" | cut -d";" -f2)
+# pass base as name, it will be expanded in function applyit
+applyit base[@]
 
-    echo "Linking to $path"
-    mkdir -p "$path"
-    stowit "$path" "$app"
-done
+echo ""
+echo "Stowing mac"
+echo ""
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    applyit mac[@]
+fi
 
 echo "All done"
 
