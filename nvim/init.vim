@@ -1,4 +1,15 @@
 let g:mapleader = "\\"
+
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" use <Tab> as trigger keys
+imap <Tab> <Plug>(completion_smart_tab)
+imap <S-Tab> <Plug>(completion_smart_s_tab)
+
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
 "let g:deoplete#enable_at_startup = 1
 
 "" semshi
@@ -9,11 +20,8 @@ let g:semshi#error_sign=v:false
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
 
-"" vim-lsp
-"Disabled language server diagnostic and leave it to other tools
-let g:lsp_diagnostics_enabled = 0
-
 "" ale
+let g:ale_completion_enabled = 0
 let g:ale_virtualtext_cursor = 1
 let g:ale_fix_on_save = 1
 let g:ale_disable_lsp = 1
@@ -56,10 +64,17 @@ let g:NERDTreeMapActivateNode = 'l'
 let g:NERDTreeMapUpdir = 'H'
 let g:NERDTreeMapChangeRoot = 'L'
 let g:NERDTreeMapToggle = 'z'
+
 filetype plugin indent on
 syntax on
 set number
+set clipboard=unnamedplus
 set cursorline
+set completeopt=menuone,noinsert,noselect
+" A buffer becomes hidden when it is abandoned
+set hidden
+" Ignore case when searching
+set ignorecase
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -68,16 +83,13 @@ Plug 'preservim/nerdcommenter'
 
 " Language Serve Plugins
 Plug 'neovim/nvim-lspconfig'
-"" Auto Install Language Servers
-"Plug 'prabirshrestha/vim-lsp'
-"Plug 'mattn/vim-lsp-settings'
 "" Autocomplete
 Plug 'nvim-lua/completion-nvim'
 "Plug 'Shougo/deoplete.nvim'
 "Plug 'Shougo/deoplete-lsp'
 "Plug 'lighttiger2505/deoplete-vim-lsp'
 "Supertab to fill Autocomplete
-Plug 'ervandew/supertab'
+"Plug 'ervandew/supertab'
 " Status Bar
 Plug 'vim-airline/vim-airline'
 " Pair edit with Brackets
@@ -98,10 +110,8 @@ call plug#end()
 " Python 3 Provider
 let g:python3_host_prog = '~/.pyenv/versions/pynvim/bin/python'
 
-":lua << EOF
-"require'lspconfig'.pyls.setup{cmd={os.getenv("HOME") .. '/.pyenv/versions/pynvim/bin/pyls'}}
-"EOF
 :lua << EOF
+  vim.lsp.set_log_level("debug")
   local nvim_lsp = require('lspconfig')
 
   local on_attach = function(client, bufnr)
@@ -131,33 +141,16 @@ let g:python3_host_prog = '~/.pyenv/versions/pynvim/bin/python'
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
     -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_formatting then
-        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    elseif client.resolved_capabilities.document_range_formatting then
-        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    end
+    --if client.resolved_capabilities.document_formatting then
+    --    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    --elseif client.resolved_capabilities.document_range_formatting then
+    --    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    --end
 
-    -- Set autocommands conditional on server_capabilities
-    if client.resolved_capabilities.document_highlight then
-        require('lspconfig').util.nvim_multiline_command [[
-        :hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-        :hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-        :hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-        augroup lsp_document_highlight
-            autocmd!
-            autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-            autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-        augroup END
-        ]]
-    end
   end
 
-  local servers = {'pyright'}
-  for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {
-      on_attach = on_attach,
-    }
-  end
+  nvim_lsp['pyls'].setup{on_attach=on_attach, cmd={os.getenv("HOME") .. '/.pyenv/versions/pynvim/bin/pyls'}}
+
 EOF
 
 if $TERM =~ '^\(rxvt\|screen\|interix\|putty\)\(-.*\)\?$'
