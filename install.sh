@@ -17,6 +17,7 @@ stowit() {
 
 base=(
     "$HOME/.config/nvim;nvim"
+    "$HOME/.tmuxinator;tmuxinator"
 )
 
 echo ""
@@ -25,6 +26,7 @@ for tuple in "${base[@]}"; do
     path=$(echo "$tuple" | cut -d";" -f1)
     app=$(echo "$tuple" | cut -d";" -f2)
 
+    echo "Linking to $path"
     mkdir -p "$path"
     stowit "$path" "$app"
 done
