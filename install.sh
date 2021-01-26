@@ -6,6 +6,8 @@ then
     exit
 fi
 
+# stow issue resuts in wrong warning. Can be ignored.
+# https://github.com/aspiers/stow/issues/65
 stowit() {
     usr=$1
     app=$2
@@ -17,6 +19,7 @@ stowit() {
 
 base=(
     "$HOME/.config/nvim;nvim"
+    "$HOME;tmux"
     "$HOME/.tmuxinator;tmuxinator"
 )
 
