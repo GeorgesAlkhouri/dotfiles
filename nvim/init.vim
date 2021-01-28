@@ -9,8 +9,11 @@ imap <Tab> <Plug>(completion_smart_tab)
 imap <S-Tab> <Plug>(completion_smart_s_tab)
 
 nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap zx :NERDTreeToggle<CR>
 
-"let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
+
+let g:polyglot_disabled = ['python']
 
 "" semshi
 let g:semshi#mark_selected_nodes=1
@@ -39,7 +42,16 @@ let g:ale_python_pylint_executable= $HOME . '/.pyenv/versions/pynvim/bin/pylint'
 let g:ale_python_isort_executable = $HOME . '/.pyenv/versions/pynvim/bin/isort'
 let g:ale_python_yapf_executable = $HOME . '/.pyenv/versions/pynvim/bin/yapf'
 
+" Vimspector
+let g:vimspector_base_dir = expand( '$HOME/.config/nvim/vimspector' )
+let g:vimspector_enable_mappings = 'HUMAN'
+nmap <F5> :Start -wait=always python -m debugpy --listen 55678 --wait-for-client % --<CR>
 
+"sign define vimspectorBP text= texthl=WarningMsg
+"sign define vimspectorBPDisabled text= texthl=WarningMsg
+"sign define vimspectorPC text= texthl=WarningMsg
+
+let g:pydocstring_formatter = 'numpy'
 
 let g:ale_linters = {
             \   'gitcommit': ['gitlint'],
@@ -63,10 +75,10 @@ let g:NERDTreeMapCloseDir = 'h'
 let g:NERDTreeMapActivateNode = 'l'
 let g:NERDTreeMapUpdir = 'H'
 let g:NERDTreeMapChangeRoot = 'L'
-let g:NERDTreeMapToggle = 'z'
 
 filetype plugin indent on
 syntax on
+set smarttab
 set number
 set clipboard=unnamedplus
 set cursorline
@@ -76,24 +88,28 @@ set hidden
 " Ignore case when searching
 set ignorecase
 
+" Fileype settings
+
+autocmd FileType python
+       \ call deoplete#custom#buffer_option('auto_complete', v:false)
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 smarttab expandtab
+
 call plug#begin('~/.local/share/nvim/plugged')
 
-
+" Comments
 Plug 'preservim/nerdcommenter'
-
 " Language Serve Plugins
 Plug 'neovim/nvim-lspconfig'
 "" Autocomplete
 Plug 'nvim-lua/completion-nvim'
-"Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim'
 "Plug 'Shougo/deoplete-lsp'
-"Plug 'lighttiger2505/deoplete-vim-lsp'
-"Supertab to fill Autocomplete
-"Plug 'ervandew/supertab'
 " Status Bar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+" Color Scheme
 Plug 'rafi/awesome-vim-colorschemes'
+Plug 'sheerun/vim-polyglot'
 " Pair edit with Brackets
 Plug 'jiangmiao/auto-pairs'
 "" Linting
@@ -102,10 +118,12 @@ Plug 'dense-analysis/ale'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 " Indent
 Plug 'Vimjas/vim-python-pep8-indent'
-"Plug 'sheerun/vim-polyglot'
-" Color Scheme
 " Navigation
 Plug 'preservim/nerdtree'
+" Debugger
+Plug 'puremourning/vimspector', { 'do' : './install_gadget.py --basedir ~/.config/nvim/vimspector --enable-python'}
+" Docstrings
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
 call plug#end()
 
 
