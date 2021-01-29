@@ -37,6 +37,7 @@
 
   end
 
+	nvim_lsp['yamlls'].setup{on_attach=on_attach}
   nvim_lsp['pyls'].setup{on_attach=on_attach, cmd={os.getenv("HOME") .. '/.pyenv/versions/pynvim/bin/pyls'}}
 
 EOF
