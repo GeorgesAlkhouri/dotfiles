@@ -13,7 +13,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     linux__uberspace) config=linux__uberspace ;;
 
     *)
-        echo "Linux config not set. Choices linux | linux__ubersapce"
+        echo "Linux config not set. Choices linux | linux__uberspace"
         exit 1
         ;;
     esac
