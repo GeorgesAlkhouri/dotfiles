@@ -42,9 +42,15 @@ eval "$(command pyenv virtualenv-init -)"
 
 pyenv virtuelenv "$PY_VER" pynvim
 pyenv activate pynvim
-pip install flake8 pylint yapf isort mypy vim-vint yamllint
+pip install flake8 pylint yapf isort mypy vim-vint yamllint pynvim
 pyenv deactivate
 
 pyenv virtuelenv "$PY_VER" sys
 pip install flake8 pylint yapf isort mypy
 pyenv deactivate
+
+
+# Neovim
+
+curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
