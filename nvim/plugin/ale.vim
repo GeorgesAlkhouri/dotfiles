@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 let g:ale_completion_enabled = 0
 let g:ale_virtualtext_cursor = 1
 let g:ale_fix_on_save = 1
@@ -15,6 +17,8 @@ let g:ale_python_mypy_executable= $HOME . '/.pyenv/versions/pynvim/bin/mypy'
 let g:ale_python_pylint_executable= $HOME . '/.pyenv/versions/pynvim/bin/pylint'
 let g:ale_python_isort_executable = $HOME . '/.pyenv/versions/pynvim/bin/isort'
 let g:ale_python_yapf_executable = $HOME . '/.pyenv/versions/pynvim/bin/yapf'
+let g:ale_vim_vint_executable = $HOME . '/.pyenv/versions/pynvim/bin/vint'
+let g:ale_yaml_yamlfix_executable = $HOME . '/.pyenv/versions/pynvim/bin/yamllint'
 
 let g:pydocstring_formatter = 'numpy'
 
@@ -26,6 +30,7 @@ let g:ale_linters = {
             \   'markdown': ['markdownlint'],
             \   'vim': ['vint'],
             \   'zsh': ['shellcheck'],
+						\   'yaml': ['yamllint']
             \}
 
 let g:ale_fixers = {
@@ -34,4 +39,5 @@ let g:ale_fixers = {
             \   'python': ['yapf', 'isort'],
             \   'sh': ['shfmt'],
             \   'sql': ['pgformatter'],
+						\   'yaml': ['prettier']
             \}
