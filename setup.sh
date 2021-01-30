@@ -10,7 +10,7 @@ if [[ "$OSTYPE" == "linux"* ]]; then
     case "$1" in
     linux) config=linux ;;
 
-    linux__ubersapce) config=linux__ubersapce ;;
+    linux__uberspace) config=linux__uberspace ;;
 
     *)
         echo "Linux config not set. Choices linux | linux__ubersapce"
