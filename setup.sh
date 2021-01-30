@@ -52,9 +52,11 @@ mac=(
     "$HOME;mac__zprezto"
 )
 
-linux_uberspace=(
+linux__uberspace=(
     "$HOME;linux__uberspace_zprezto"
 )
+
+linux=()
 
 echo ""
 echo "Stowing base"
@@ -70,7 +72,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     applyit mac[@]
 elif [[ "$OSTYPE" == "linux"* ]]; then
     echo ""
-    echo "Stowing for linux"
+    echo "Stowing for linux (config=$config)"
     echo ""
     applyit $config[@]
 fi
