@@ -17,7 +17,7 @@ fi
 echo "Installing Brew"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-brew install --HEAD neovim
+brew install -q --HEAD neovim
 brew install -q pyenv \
     git \
     git-flow \
