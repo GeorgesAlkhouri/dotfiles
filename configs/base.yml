@@ -1,0 +1,14 @@
+
+base:
+  - autoload:
+      add: True
+      path: $HOME/.autoload
+      stow: autoload
+  - nvim:
+      add: True
+      path: $HOME/.config/nvim
+      stow: nvim
+
+mac:
+  - autoload:
+      add: False
