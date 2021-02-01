@@ -8,12 +8,12 @@ fi
 # If linux OS need to know which config to use.
 if [[ "$OSTYPE" == "linux"* ]]; then
     case "$1" in
-    linux) config=linux ;;
+    linux__work) config=linux__work ;;
 
     linux__uberspace) config=linux__uberspace ;;
 
     *)
-        echo "Linux config not set. Choices linux | linux__uberspace"
+        echo "Linux config not set. Choices linux__work | linux__uberspace"
         exit 1
         ;;
     esac
@@ -56,7 +56,9 @@ linux__uberspace=(
     "$HOME;linux__uberspace_zprezto"
 )
 
-linux=()
+linux__work=(
+    "$HOME;linux__work_zprezto"
+)
 
 echo ""
 echo "Stowing base"

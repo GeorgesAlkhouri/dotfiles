@@ -26,7 +26,8 @@ brew install -q pyenv \
     zsh \
     npm \
     shellcheck \
-    shfmt
+    shfmt \
+    tmuxinator
 
 ## brew post install
 eval "$(command pyenv init -)"
@@ -42,7 +43,7 @@ eval "$(command pyenv virtualenv-init -)"
 
 pyenv virtuelenv "$PY_VER" pynvim
 pyenv activate pynvim
-pip install flake8 pylint yapf isort mypy vim-vint yamllint pynvim
+pip install flake8 pylint yapf isort mypy vim-vint yamllint pynvim python-language-server
 pyenv deactivate
 
 pyenv virtuelenv "$PY_VER" sys
