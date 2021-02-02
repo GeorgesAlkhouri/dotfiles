@@ -73,6 +73,9 @@ Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'Vimjas/vim-python-pep8-indent'
 " Navigation
 Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-rooter'
 " Debugger
 Plug 'puremourning/vimspector', { 'do' : './install_gadget.py --basedir ~/.config/nvim/vimspector --enable-python'}
 " Docstrings
