@@ -11,6 +11,13 @@ imap <S-Tab> <Plug>(completion_smart_s_tab)
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap zx :NERDTreeToggle<CR>
 
+
+" switch buffer in terminal mode
+tnoremap <C-w>h <C-\><C-n><C-w>h
+tnoremap <C-w>j <C-\><C-n><C-w>j
+tnoremap <C-w>k <C-\><C-n><C-w>k
+tnoremap <C-w>l <C-\><C-n><C-w>l
+
 let g:deoplete#enable_at_startup = 1
 
 let g:polyglot_disabled = ['python']
