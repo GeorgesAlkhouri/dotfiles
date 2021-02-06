@@ -49,11 +49,12 @@ set hidden
 set ignorecase
 
 " Fileype settings
-
-autocmd FileType python
-       \ call deoplete#custom#buffer_option('auto_complete', v:false)
-autocmd FileType python setlocal tabstop=4 shiftwidth=4 smarttab expandtab
-
+augroup filetype_settings
+    autocmd FileType python
+           \ call deoplete#custom#buffer_option('auto_complete', v:false)
+    autocmd FileType python setlocal textwidth=88 tabstop=4 shiftwidth=4 smarttab expandtab
+    autocmd FileType gitcommit setlocal textwidth=80
+augroup END
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Comments

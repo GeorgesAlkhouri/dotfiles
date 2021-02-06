@@ -16,7 +16,7 @@ let g:ale_python_mypy_executable= $HOME . '/.pyenv/versions/pynvim/bin/mypy'
 "let g:ale_python_pyls_executable= $HOME . '/.pyenv/versions/pynvim/bin/pyls'
 let g:ale_python_pylint_executable= $HOME . '/.pyenv/versions/pynvim/bin/pylint'
 let g:ale_python_isort_executable = $HOME . '/.pyenv/versions/pynvim/bin/isort'
-let g:ale_python_yapf_executable = $HOME . '/.pyenv/versions/pynvim/bin/yapf'
+let g:ale_python_black_executable = $HOME . '/.pyenv/versions/pynvim/bin/black'
 let g:ale_vim_vint_executable = $HOME . '/.pyenv/versions/pynvim/bin/vint'
 let g:ale_yaml_yamlfix_executable = $HOME . '/.pyenv/versions/pynvim/bin/yamllint'
 
@@ -36,7 +36,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
             \   '*': ['remove_trailing_lines', 'trim_whitespace'],
             \   'markdown': ['prettier'],
-            \   'python': ['yapf', 'isort'],
+            \   'python': ['black', 'isort'],
             \   'sh': ['shfmt'],
             \   'sql': ['pgformatter'],
 						\   'yaml': ['prettier']

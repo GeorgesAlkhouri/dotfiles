@@ -44,6 +44,7 @@ applyit() {
 base=(
     "$HOME/.autoload;autoload"
     "$HOME/.config/nvim;nvim"
+    "$HOME/.config/pycodestyle;pycodestyle"
     "$HOME;tmux"
     "$HOME/.tmuxinator;tmuxinator"
 )
