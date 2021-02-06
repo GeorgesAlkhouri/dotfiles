@@ -114,7 +114,7 @@ def print_output(configs: List[StowConfig], sep=";"):
     """
     for config in configs:
 
-        config_line = f'"{config.path}{sep}{config.stow}"'
+        config_line = f'{config.path}{sep}{config.stow}'
         print(config_line)
 
 
@@ -167,8 +167,8 @@ def run(**kwargs):
     with open(kwargs["path"], "r") as file:
         doc: Dict = yaml.load(file, yaml.FullLoader)
 
-    assert_group_name(BASE_KEY, doc)
-    base_confs = to_configs(doc.pop(BASE_KEY))
+    assert_group_name(kwargs["base"], doc)
+    base_confs = to_configs(doc.pop(kwargs["base"]))
 
     result_group = base_confs
     if kwargs["group"]:

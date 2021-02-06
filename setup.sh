@@ -1,23 +1,19 @@
 #!/usr/bin/env bash
 
 if ! command -v stow &>/dev/null; then
-    echo "stow could not be found, please install."
-    exit
+    echo "'stow' could not be found, please install."
+    exit 1
 fi
 
-# If linux OS need to know which config to use.
-if [[ "$OSTYPE" == "linux"* ]]; then
-    case "$1" in
-    linux__work) config=linux__work ;;
+# check python requirements
+# grep should return 2
+found_deps=$(pip --disable-pip-version-check list | grep -cw "click\|PyYAML")
 
-    linux__uberspace) config=linux__uberspace ;;
-
-    *)
-        echo "Linux config not set. Choices linux__work | linux__uberspace"
-        exit 1
-        ;;
-    esac
+if [ "$found_deps" -lt "2" ]; then
+    echo "Not all needed python deps where found."
+    exit 1
 fi
+
 # stow issue resuts in wrong warning. Can be ignored.
 # https://github.com/aspiers/stow/issues/65
 stowit() {
@@ -26,58 +22,26 @@ stowit() {
     # -v verbose
     # -R recursive
     # -t target
+
     stow -v -R -t "${usr}" "${app}"
 }
 
-applyit() {
-    declare -a list=("${!1}")
-    for tuple in "${list[@]}"; do
-        path=$(echo "$tuple" | cut -d";" -f1)
-        app=$(echo "$tuple" | cut -d";" -f2)
-
-        echo "Linking to $path"
-        mkdir -p "$path"
-        stowit "$path" "$app"
-    done
-}
-
-base=(
-    "$HOME/.autoload;autoload"
-    "$HOME/.config/nvim;nvim"
-    "$HOME/.config/pycodestyle;pycodestyle"
-    "$HOME;tmux"
-    "$HOME/.tmuxinator;tmuxinator"
-)
-
-mac=(
-    "$HOME;mac__zprezto"
-)
-
-linux__uberspace=(
-    "$HOME;linux__uberspace_zprezto"
-)
-
-linux__work=(
-    "$HOME;linux__work_zprezto"
-)
-
-echo ""
-echo "Stowing base"
-echo ""
-
-# pass base as name, it will be expanded in function applyit
-applyit base[@]
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo ""
-    echo "Stowing for mac"
-    echo ""
-    applyit mac[@]
-elif [[ "$OSTYPE" == "linux"* ]]; then
-    echo ""
-    echo "Stowing for linux (config=$config)"
-    echo ""
-    applyit $config[@]
+if [ $# -eq "0" ]; then
+    configs=$(python util.py configs/stow.yml)
+else
+    configs=$(python util.py configs/stow.yml "$@")
 fi
 
+
+echo "---------------------------------------------"
+for tuple in ${configs[@]}; do
+    path=$(echo "$tuple" | cut -d";" -f1)
+    app=$(echo "$tuple" | cut -d";" -f2)
+    
+    echo "Linking to $path"
+    mkdir -p "$path"
+    stowit "$path" "$app"
+    echo "---------------------------------------------"
+done
+echo 
 echo "All done"
