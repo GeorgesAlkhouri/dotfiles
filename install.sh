@@ -32,7 +32,7 @@ brew install -q pyenv fzf ripgrep \
 ## brew post install
 eval "$(command pyenv init -)"
 
-npm install -g prettier
+npm install -g prettier jsonlint
 
 # Python
 
