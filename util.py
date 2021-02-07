@@ -1,4 +1,5 @@
 """Small utility script to generate stow configs more comfortable."""
+import os
 from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
@@ -104,6 +105,13 @@ def to_configs(
     return results
 
 
+def expand_path(path: str) -> str:
+    """Expands possible OS env variables and the tilde expansion."""
+    path = os.path.expanduser(path)
+    path = os.path.expandvars(path)
+    return path
+
+
 def print_output(configs: List[StowConfig], sep=";"):
     """Prints out config strings intended for further bash processing.
 
@@ -114,7 +122,7 @@ def print_output(configs: List[StowConfig], sep=";"):
     """
     for config in configs:
 
-        config_line = f'{config.path}{sep}{config.stow}'
+        config_line = f"{expand_path(config.path)}{sep}{config.stow}"
         print(config_line)
 
 

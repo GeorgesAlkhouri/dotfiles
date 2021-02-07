@@ -26,22 +26,35 @@ stowit() {
     stow -v -R -t "${usr}" "${app}"
 }
 
+get_value_of() {
+    variable_name=$1
+    variable_value=""
+    if set | grep -q "^$variable_name="; then
+        eval variable_value="\$$variable_name"
+    fi
+    echo "$variable_value"
+}
+
 if [ $# -eq "0" ]; then
-    configs=$(python util.py configs/stow.yml)
+    lines=$(python util.py configs/stow.yml)
 else
-    configs=$(python util.py configs/stow.yml "$@")
+    lines=$(python util.py configs/stow.yml "$@")
 fi
 
+SAVEIFS=$IFS       # Save current IFS
+IFS=$'\n'          # Change IFS to new line
+configs=("$lines") # split to array 
+IFS=$SAVEIFS
 
 echo "---------------------------------------------"
 for tuple in ${configs[@]}; do
     path=$(echo "$tuple" | cut -d";" -f1)
     app=$(echo "$tuple" | cut -d";" -f2)
-    
+
     echo "Linking to $path"
     mkdir -p "$path"
     stowit "$path" "$app"
     echo "---------------------------------------------"
 done
-echo 
+echo
 echo "All done"
