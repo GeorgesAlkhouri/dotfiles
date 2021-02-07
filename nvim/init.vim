@@ -13,10 +13,19 @@ nnoremap zx :NERDTreeToggle<CR>
 
 
 " switch buffer in terminal mode
-tnoremap <C-w>h <C-\><C-n><C-w>h
-tnoremap <C-w>j <C-\><C-n><C-w>j
-tnoremap <C-w>k <C-\><C-n><C-w>k
-tnoremap <C-w>l <C-\><C-n><C-w>l
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+
+" more convenient way to switch buffers
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Esc switches to terminal normal mode
+tnoremap <Esc> <C-\><C-n>
 
 let g:deoplete#enable_at_startup = 1
 
@@ -85,7 +94,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 " Debugger
-Plug 'puremourning/vimspector', { 'do' : './install_gadget.py --basedir ~/.config/nvim/vimspector --enable-python'}
+Plug 'puremourning/vimspector', { 'do' : './install_gadget.py --basedir ~/.config/nvim/vimspector --all --force-all --enable-python'}
 " Docstrings
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
 call plug#end()

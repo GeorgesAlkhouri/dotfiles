@@ -30,7 +30,8 @@ let g:ale_linters = {
             \   'markdown': ['markdownlint'],
             \   'vim': ['vint'],
             \   'zsh': ['shellcheck'],
-						\   'yaml': ['yamllint']
+						\   'yaml': ['yamllint'],
+						\   'json': ['jsonlint']
             \}
 
 let g:ale_fixers = {
@@ -39,5 +40,6 @@ let g:ale_fixers = {
             \   'python': ['black', 'isort'],
             \   'sh': ['shfmt'],
             \   'sql': ['pgformatter'],
-						\   'yaml': ['prettier']
+						\   'yaml': ['prettier'],
+						\   'json': ['prettier']
             \}
