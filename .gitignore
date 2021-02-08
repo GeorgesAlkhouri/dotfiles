@@ -1,2 +1,2 @@
-nvim/vimspector/*
-!nvim/vimspector/*.json
+stows/nvim/vimspector/*
+!stows/nvim/vimspector/*.json
