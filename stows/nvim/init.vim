@@ -9,7 +9,6 @@ imap <Tab> <Plug>(completion_smart_tab)
 imap <S-Tab> <Plug>(completion_smart_s_tab)
 
 nnoremap <leader>sv :source $MYVIMRC<CR>
-nnoremap zx :NERDTreeToggle<CR>
 
 
 " switch buffer in terminal mode
@@ -31,6 +30,10 @@ let g:deoplete#enable_at_startup = 1
 
 let g:polyglot_disabled = ['python']
 
+
+" vim-autoimport
+nnoremap <space>a :ImportSymbol<CR>
+
 "" semshi
 let g:semshi#mark_selected_nodes=1
 let g:semshi#error_sign=v:false
@@ -38,12 +41,6 @@ let g:semshi#error_sign=v:false
 "" airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
-
-"" Nerdtree
-let g:NERDTreeMapCloseDir = 'h'
-let g:NERDTreeMapActivateNode = 'l'
-let g:NERDTreeMapUpdir = 'H'
-let g:NERDTreeMapChangeRoot = 'L'
 
 filetype plugin indent on
 syntax on
@@ -97,6 +94,7 @@ Plug 'airblade/vim-rooter'
 Plug 'puremourning/vimspector', { 'do' : './install_gadget.py --basedir ~/.config/nvim/vimspector --all --force-all --enable-python'}
 " Docstrings
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
+Plug 'wookayin/vim-autoimport'
 call plug#end()
 
 

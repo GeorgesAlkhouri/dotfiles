@@ -2,11 +2,7 @@
 
 ## Usage 
 
-Install [stow](https://www.gnu.org/software/stow/) and Python with the following modules:
-- click
-- PyYAML
-
-then:
+Install [stow](https://www.gnu.org/software/stow/) then:
 
 ```shell
 git clone https://github.com/GeorgesAlkhouri/dotfiles.git

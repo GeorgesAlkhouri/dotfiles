@@ -7,12 +7,12 @@ fi
 
 # check python requirements
 # grep should return 2
-found_deps=$(pip --disable-pip-version-check list | grep -cw "click\|PyYAML")
+#found_deps=$(pip --disable-pip-version-check list | grep -cw "click\|PyYAML")
 
-if [ "$found_deps" -lt "2" ]; then
-    echo "Not all needed python deps where found."
-    exit 1
-fi
+#if [ "$found_deps" -lt "2" ]; then
+#    echo "Not all needed python deps where found."
+#    exit 1
+#fi
 
 # stow issue resuts in wrong warning. Can be ignored.
 # https://github.com/aspiers/stow/issues/65
@@ -22,8 +22,8 @@ stowit() {
     # -v verbose
     # -R recursive
     # -t target
-
-    stow -v -R -t "${usr}" "${app}"
+    # -d stow dir
+    stow -v -R -d stows -t "${usr}" "${app}"
 }
 
 get_value_of() {
@@ -36,9 +36,9 @@ get_value_of() {
 }
 
 if [ $# -eq "0" ]; then
-    lines=$(python util.py configs/stow.yml)
+    lines=$(./bins/python.pex src/util.py configs/stow.yml)
 else
-    lines=$(python util.py configs/stow.yml "$@")
+    lines=$(./bins/python.pex src/util.py configs/stow.yml "$@")
 fi
 
 SAVEIFS=$IFS       # Save current IFS
