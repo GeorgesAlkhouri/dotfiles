@@ -5,14 +5,17 @@ if ! command -v stow &>/dev/null; then
     exit 1
 fi
 
-# check python requirements
-# grep should return 2
-#found_deps=$(pip --disable-pip-version-check list | grep -cw "click\|PyYAML")
+while [[ $# -gt 0 ]]; do
+    key="$1"
 
-#if [ "$found_deps" -lt "2" ]; then
-#    echo "Not all needed python deps where found."
-#    exit 1
-#fi
+    case $key in
+    -c | --config)
+        config="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    esac
+done
 
 # stow issue resuts in wrong warning. Can be ignored.
 # https://github.com/aspiers/stow/issues/65
@@ -35,15 +38,15 @@ get_value_of() {
     echo "$variable_value"
 }
 
-if [ $# -eq "0" ]; then
+if [ -z ${config+x} ]; then
     lines=$(./bins/python.pex src/util.py configs/stow.yml)
 else
-    lines=$(./bins/python.pex src/util.py configs/stow.yml "$@")
+    lines=$(./bins/python_"${config}".pex src/util.py configs/stow.yml -g "${config}")
 fi
 
 SAVEIFS=$IFS       # Save current IFS
 IFS=$'\n'          # Change IFS to new line
-configs=("$lines") # split to array 
+configs=("$lines") # split to array
 IFS=$SAVEIFS
 
 echo "---------------------------------------------"
