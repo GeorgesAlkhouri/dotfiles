@@ -98,6 +98,8 @@ Plug 'puremourning/vimspector', { 'do' : './install_gadget.py --basedir ~/.confi
 " Docstrings
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
 Plug 'wookayin/vim-autoimport'
+" Tagbar
+Plug 'preservim/tagbar'
 call plug#end()
 
 

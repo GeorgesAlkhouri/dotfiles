@@ -1,5 +1,5 @@
 
-nnoremap <M-z> :NERDTreeToggle<CR>
+nnoremap <M-f> :NERDTreeToggle<CR>
 
 let g:NERDTreeMapCloseDir = 'h'
 let g:NERDTreeMapActivateNode = 'l'
