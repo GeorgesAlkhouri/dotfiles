@@ -1,15 +1,25 @@
 let g:mapleader = "\\"
 
+filetype plugin indent on
+syntax on
+set smarttab
+set number
+set clipboard=unnamedplus
+set cursorline
+set completeopt=menuone,noinsert,noselect
+" A buffer becomes hidden when it is abandoned
+set hidden
+" Ignore case when searching
+set ignorecase
+
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 " use <Tab> as trigger keys
 imap <Tab> <Plug>(completion_smart_tab)
 imap <S-Tab> <Plug>(completion_smart_s_tab)
 
 nnoremap <leader>sv :source $MYVIMRC<CR>
-
 
 " switch buffer in terminal mode
 tnoremap <C-h> <C-\><C-n><C-w>h
@@ -26,10 +36,14 @@ map <C-l> <C-W>l
 " Esc switches to terminal normal mode
 tnoremap <Esc> <C-\><C-n>
 
+" Python 3 Provider
+let g:python3_host_prog = '~/.pyenv/versions/pynvim/bin/python'
+
 let g:deoplete#enable_at_startup = 1
 
 let g:polyglot_disabled = ['python']
 
+let g:pydocstring_formatter = 'numpy'
 
 " vim-autoimport
 nnoremap <space>a :ImportSymbol<CR>
@@ -44,26 +58,6 @@ let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-
-filetype plugin indent on
-syntax on
-set smarttab
-set number
-set clipboard=unnamedplus
-set cursorline
-set completeopt=menuone,noinsert,noselect
-" A buffer becomes hidden when it is abandoned
-set hidden
-" Ignore case when searching
-set ignorecase
-
-" Fileype settings
-augroup filetype_settings
-    autocmd FileType python
-           \ call deoplete#custom#buffer_option('auto_complete', v:false)
-    autocmd FileType python setlocal textwidth=88 tabstop=4 shiftwidth=4 smarttab expandtab
-    autocmd FileType gitcommit setlocal textwidth=80
-augroup END
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Comments
@@ -102,11 +96,6 @@ Plug 'wookayin/vim-autoimport'
 Plug 'preservim/tagbar'
 call plug#end()
 
-
-" Python 3 Provider
-let g:python3_host_prog = '~/.pyenv/versions/pynvim/bin/python'
-
-
 if $TERM =~ '^\(rxvt\|screen\|interix\|putty\)\(-.*\)\?$'
                 set notermguicolors
 elseif $TERM =~ '^\(tmux\|iterm\|vte\|gnome\)\(-.*\)\?$'
@@ -121,7 +110,8 @@ elseif $TERM =~ '^\(xterm\)\(-.*\)\?$'
     else
        set notermguicolors
      endif
-endif
+ endif
+
 
 colorscheme gruvbox
 let g:airline_theme='gruvbox'

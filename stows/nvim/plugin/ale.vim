@@ -20,8 +20,6 @@ let g:ale_python_black_executable = $HOME . '/.pyenv/versions/pynvim/bin/black'
 let g:ale_vim_vint_executable = $HOME . '/.pyenv/versions/pynvim/bin/vint'
 let g:ale_yaml_yamlfix_executable = $HOME . '/.pyenv/versions/pynvim/bin/yamllint'
 
-let g:pydocstring_formatter = 'numpy'
-
 let g:ale_linters = {
             \   'gitcommit': ['gitlint'],
             \   'python': ['flake8', 'mypy', 'pylint'],
