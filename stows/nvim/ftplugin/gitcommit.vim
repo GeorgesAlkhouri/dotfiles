@@ -1,1 +1,1 @@
-setlocal nomodeline tabstop=8 formatoptions+=tl textwidth=72
+setlocal tabstop=8 formatoptions+=tl textwidth=72
