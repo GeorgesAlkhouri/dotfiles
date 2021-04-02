@@ -34,6 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '((python :variables
              python-backend 'lsp
+             python-lsp-server 'pyls
              python-formatter 'black
              python-format-on-save t)
      fasd
@@ -49,13 +50,12 @@ This function should only modify configuration layer settings."
      treemacs
      org
      markdown
-     docker
+     (lsp :variables lsp-lens-enable t)
+     syntax-checking
      ;; themes-megapack
      ;; auto-completion
      ;; better-defaults
-     ;; lsp
      ;; spell-checking
-     ;; syntax-checking
      ;; version-control
      )
 
@@ -525,9 +525,25 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  (defvar-local my/flycheck-local-cache nil)
+  (defun my/flycheck-checker-get (fn checker property)
+    "Modify the same named flycheck function to add additional checkers to
+lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
+    (or (alist-get property (alist-get checker my/flycheck-local-cache))
+        (funcall fn checker property)))
+  (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'python-mode)
+                (setq my/flycheck-local-cache  '((lsp . ((next-checkers . (python-mypy)))))))))
+
   (spaceline-toggle-buffer-position-off)
-  (setq lsp-lens-enable t)
-  ;; (setq lsp-pyright-venv-path "/Users/georges/.pyenv/versions")
+  (setq lsp-disabled-clients '(mspyls))
+  (setq lsp-pyls-plugins-flake8-enabled t)
+  (setq lsp-pyls-plugins-pylint-enabled t)
+  (setq lsp-pyls-configuration-sources ["flake8"])
  )
 
 ;; Do not write anything past this comment. This is where Emacs will
