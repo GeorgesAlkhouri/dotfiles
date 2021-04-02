@@ -18,7 +18,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 #autoload functions are defined in ~/.autoload
-autoload -Uz pyenv
+#autoload -Uz pyenv
 
 set -o vi
 
@@ -29,5 +29,9 @@ alias tl='tmux list-sessions'
 alias ts='tmux new-session -s'
 
 alias i='arch -x86_64'
+
+eval "$(command pyenv init -)"
+eval "$(command pyenv virtualenv-init -)"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
