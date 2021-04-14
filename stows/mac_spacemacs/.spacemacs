@@ -2,6 +2,8 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(defconst mac? (eq system-type 'darwin)  "Are we on a macOS machine?")
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -45,12 +47,12 @@ This function should only modify configuration layer settings."
      helm
      multiple-cursors
      shell-scripts
+     org
      (shell :variables
             shell-default-shell 'vterm
             shell-default-height 30
             shell-default-position 'bottom)
      treemacs
-     org
      markdown
      (lsp :variables lsp-lens-enable t)
      syntax-checking
@@ -547,17 +549,27 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
     (or (alist-get property (alist-get checker my/flycheck-local-cache))
         (funcall fn checker property)))
   (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
-
   (add-hook 'lsp-managed-mode-hook
             (lambda ()
               (when (derived-mode-p 'python-mode)
                 (setq my/flycheck-local-cache  '((lsp . ((next-checkers . (python-mypy)))))))))
 
+  (with-eval-after-load 'org
+    (setq org-directory (expand-file-name "org" user-home-directory))
+    "Set path to org mobile folder for macOS"
+    (let ((org-mobile-path (getenv "MOBILE_ORG_PATH")))
+      (when (and org-mobile-path mac?)
+        (setq org-mobile-directory org-mobile-path)
+        ))
+    )
   (spaceline-toggle-buffer-position-off)
   (setq lsp-disabled-clients '(mspyls))
   (setq lsp-pyls-plugins-flake8-enabled t)
   (setq lsp-pyls-plugins-pylint-enabled t)
   (setq lsp-pyls-configuration-sources ["flake8"])
+
+  (setq dotspacemacs-scratch-mode 'org-mode)
+  (setq dotspacemacs-scratch-buffer-persistent t)
  )
 
 ;; Do not write anything past this comment. This is where Emacs will

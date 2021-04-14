@@ -16,5 +16,5 @@ if [[ -s ~/.zshsecret ]]; then
   source ~/.zshsecret
 fi
 
-
+export MOBILE_ORG_PATH="$HOME/Library/Mobile Documents/iCloud~com~mobileorg~mobileorg/Documents"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
