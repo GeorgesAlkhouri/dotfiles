@@ -17,6 +17,10 @@ base:
       stow: tmuxinator
 
 mac:
+  - spacemacs:
+      add: True
+      path: $HOME
+      stow: mac_spacemacs
   - zprezto:
       add: True
       path: $HOME

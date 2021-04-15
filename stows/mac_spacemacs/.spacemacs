@@ -2,6 +2,8 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(defconst mac? (eq system-type 'darwin)  "Are we on a macOS machine?")
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -32,29 +34,33 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((python :variables
+   '(yaml
+     (python :variables
              python-backend 'lsp
-             python-lsp-server 'pyright
+             python-lsp-server 'pyls
              python-formatter 'black
-             python-format-on-save t)
+             python-format-on-save t
+             python-sort-imports-on-save t)
      fasd
      emacs-lisp
      git
      helm
      multiple-cursors
+     shell-scripts
+     org
      (shell :variables
             shell-default-shell 'vterm
             shell-default-height 30
             shell-default-position 'bottom)
      treemacs
+     markdown
+     (lsp :variables lsp-lens-enable t)
+     syntax-checking
+     ipython-notebook
+     auto-completion
      ;; themes-megapack
-     ;; auto-completion
      ;; better-defaults
-     ;; lsp
-     ;; markdown
-     ;; org
      ;; spell-checking
-     ;; syntax-checking
      ;; version-control
      )
 
@@ -392,7 +398,14 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:relative t
+                                :disabled-for-modes dired-mode
+                                doc-view-mode
+                                markdown-mode
+                                org-mode
+                                pdf-view-mode
+                                text-mode
+                                :size-limit-kb 1000)
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -509,6 +522,10 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  ;; set custom file variable and create file if not existing
+  (setq custom-file (expand-file-name "custom.el" user-home-directory))
+  (write-region "" nil custom-file t)
+  (load custom-file)
   )
 
 (defun dotspacemacs/user-load ()
@@ -524,8 +541,35 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  (defvar-local my/flycheck-local-cache nil)
+  (defun my/flycheck-checker-get (fn checker property)
+    "Modify the same named flycheck function to add additional checkers to
+lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
+    (or (alist-get property (alist-get checker my/flycheck-local-cache))
+        (funcall fn checker property)))
+  (advice-add 'flycheck-checker-get :around 'my/flycheck-checker-get)
+  (add-hook 'lsp-managed-mode-hook
+            (lambda ()
+              (when (derived-mode-p 'python-mode)
+                (setq my/flycheck-local-cache  '((lsp . ((next-checkers . (python-mypy)))))))))
+
+  (with-eval-after-load 'org
+    (setq org-directory (expand-file-name "org" user-home-directory))
+    "Set path to org mobile folder for macOS"
+    (let ((org-mobile-path (getenv "MOBILE_ORG_PATH")))
+      (when (and org-mobile-path mac?)
+        (setq org-mobile-directory org-mobile-path)
+        ))
+    )
   (spaceline-toggle-buffer-position-off)
-  ;;(setq lsp-pyright-venv-path "/Users/georges/.pyenv/versions")
+  (setq lsp-disabled-clients '(mspyls))
+  (setq lsp-pyls-plugins-flake8-enabled t)
+  (setq lsp-pyls-plugins-pylint-enabled t)
+  (setq lsp-pyls-configuration-sources ["flake8"])
+
+  (setq dotspacemacs-scratch-mode 'org-mode)
+  (setq dotspacemacs-scratch-buffer-persistent t)
  )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -535,91 +579,4 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(company-quickhelp-color-background "#4F4F4F")
- '(company-quickhelp-color-foreground "#DCDCCC")
- '(compilation-message-face 'default)
- '(cua-global-mark-cursor-color "#3cafa5")
- '(cua-normal-cursor-color "#8d9fa1")
- '(cua-overwrite-cursor-color "#c49619")
- '(cua-read-only-cursor-color "#93a61a")
- '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#6272a4")
- '(helm-completion-style 'emacs)
- '(highlight-changes-colors '("#e2468f" "#7a7ed2"))
- '(highlight-symbol-colors
-   '("#3c6f408d329d" "#0c4a45f64ce3" "#486e33913532" "#1fac3bea568d" "#2ec943ac3324" "#449935a7314d" "#0b04411b5986"))
- '(highlight-symbol-foreground-color "#9eacac")
- '(highlight-tail-colors
-   '(("#01323d" . 0)
-     ("#687f00" . 20)
-     ("#008981" . 30)
-     ("#0069b0" . 50)
-     ("#936d00" . 60)
-     ("#a72e01" . 70)
-     ("#a81761" . 85)
-     ("#01323d" . 100)))
- '(hl-bg-colors
-   '("#936d00" "#a72e01" "#ae1212" "#a81761" "#3548a2" "#0069b0" "#008981" "#687f00"))
- '(hl-fg-colors
-   '("#002732" "#002732" "#002732" "#002732" "#002732" "#002732" "#002732" "#002732"))
- '(hl-sexp-background-color "#efebe9")
- '(jdee-db-active-breakpoint-face-colors (cons "#1E2029" "#bd93f9"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#1E2029" "#50fa7b"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#1E2029" "#565761"))
- '(linum-format " %3i ")
- '(lsp-ui-doc-border "#9eacac")
- '(nrepl-message-colors
-   '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
- '(objed-cursor-color "#ff5555")
- '(package-selected-packages
-   '(doom-modeline shrink-path zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme modus-themes minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme autothemer cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme helm-fasd treemacs-magit smeargle magit-svn magit-section magit-gitflow magit-popup helm-gitignore helm-git-grep gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link forge magit ghub closql emacsql-sqlite emacsql treepy git-commit with-editor json-navigator hierarchy json-mode json-snatcher json-reformat web-beautify tern prettier-js npm-mode nodejs-repl livid-mode skewer-mode js2-refactor multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd add-node-modules-path xterm-color vterm terminal-here shell-pop multi-term eshell-z eshell-prompt-extras esh-help yasnippet-snippets lsp-ui lsp-origami origami helm-lsp helm-company helm-c-yasnippet fuzzy flycheck-pos-tip pos-tip auto-yasnippet yasnippet ac-ispell auto-complete yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
- '(pos-tip-background-color "#36473A")
- '(pos-tip-foreground-color "#FFFFC8")
- '(rustic-ansi-faces
-   ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
- '(smartrep-mode-line-active-bg (solarized-color-blend "#93a61a" "#01323d" 0.2))
- '(term-default-bg-color "#002732")
- '(term-default-fg-color "#8d9fa1")
- '(vc-annotate-background "#282a36")
- '(vc-annotate-background-mode nil)
- '(vc-annotate-color-map
-   (list
-    (cons 20 "#50fa7b")
-    (cons 40 "#85fa80")
-    (cons 60 "#bbf986")
-    (cons 80 "#f1fa8c")
-    (cons 100 "#f5e381")
-    (cons 120 "#face76")
-    (cons 140 "#ffb86c")
-    (cons 160 "#ffa38a")
-    (cons 180 "#ff8ea8")
-    (cons 200 "#ff79c6")
-    (cons 220 "#ff6da0")
-    (cons 240 "#ff617a")
-    (cons 260 "#ff5555")
-    (cons 280 "#d45558")
-    (cons 300 "#aa565a")
-    (cons 320 "#80565d")
-    (cons 340 "#6272a4")
-    (cons 360 "#6272a4")))
- '(vc-annotate-very-old-color nil)
- '(weechat-color-list
-   '(unspecified "#002732" "#01323d" "#ae1212" "#ec423a" "#687f00" "#93a61a" "#936d00" "#c49619" "#0069b0" "#3c98e0" "#a81761" "#e2468f" "#008981" "#3cafa5" "#8d9fa1" "#60767e"))
- '(xterm-color-names
-   ["#01323d" "#ec423a" "#93a61a" "#c49619" "#3c98e0" "#e2468f" "#3cafa5" "#faf3e0"])
- '(xterm-color-names-bright
-   ["#002732" "#db5823" "#62787f" "#60767e" "#8d9fa1" "#7a7ed2" "#9eacac" "#ffffee"]))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 )
