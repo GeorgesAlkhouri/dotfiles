@@ -15,17 +15,12 @@ base:
       add: True
       path: $HOME/.tmuxinator
       stow: tmuxinator
-  - spacemacs:
-      add: True
-      path: $HOME
-      stow: spacemacs
 
 mac:
   - zprezto:
       add: True
       path: $HOME
       stow: mac__zprezto
-
 
 linux-uberspace:
   - zprezto:
@@ -40,9 +35,11 @@ linux-uberspace:
       add: False
 
 linux-work:
+  - spacemacs:
+      add: True
+      path: $HOME
+      stow: linux_work_spacemacs
   - zprezto:
       add: True
       path: $HOME
       stow: linux__work_zprezto
-
-

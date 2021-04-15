@@ -18,7 +18,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 #autoload functions are defined in ~/.autoload
-autoload -Uz pyenv
+#autoload -Uz pyenv
 export LDFLAGS="-L/home/linuxbrew/.linuxbrew/opt/libnsl/lib"
 export CPPFLAGS="-I/home/linuxbrew/.linuxbrew/opt/libnsl/include"
 export PKG_CONFIG_PATH="/home/linuxbrew/.linuxbrew/opt/libnsl/lib/pkgconfig"
@@ -30,6 +30,9 @@ alias tkss='tmux kill-session -t'
 alias tksv='tmux kill-server'
 alias tl='tmux list-sessions'
 alias ts='tmux new-session -s'
+
+eval "$(command pyenv init -)"
+eval "$(command pyenv virtualenv-init -)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
