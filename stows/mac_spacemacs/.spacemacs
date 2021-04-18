@@ -58,6 +58,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      ipython-notebook
      auto-completion
+     docker
      ;; themes-megapack
      ;; better-defaults
      ;; spell-checking
