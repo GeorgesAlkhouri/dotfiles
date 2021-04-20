@@ -563,6 +563,13 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
         (setq org-mobile-directory org-mobile-path)
         ))
     )
+
+  ;; Set supported powerline font for vterm
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (set (make-local-variable 'buffer-face-mode-face) '(:family "MesloLGS NF"))
+              (buffer-face-mode t)))
+
   (spaceline-toggle-buffer-position-off)
   (setq lsp-disabled-clients '(mspyls))
   (setq lsp-pyls-plugins-flake8-enabled t)
