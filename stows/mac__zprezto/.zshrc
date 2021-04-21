@@ -18,7 +18,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 #autoload functions are defined in ~/.autoload
-#autoload -Uz pyenv
+autoload -Uz pyenv
 
 set -o vi
 
@@ -29,10 +29,6 @@ alias tl='tmux list-sessions'
 alias ts='tmux new-session -s'
 
 alias i='arch -x86_64'
-
-eval "$(command pyenv init -)"
-eval "$(command pyenv virtualenv-init -)"
-
 
 vterm_printf(){
     if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
