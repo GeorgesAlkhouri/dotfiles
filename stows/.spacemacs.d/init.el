@@ -3,6 +3,7 @@
 ;; It must be stored in your home directory.
 
 (defconst mac? (eq system-type 'darwin)  "Are we on a macOS machine?")
+(load-file (expand-file-name "config.el" dotspacemacs-directory))
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
@@ -40,7 +41,8 @@ This function should only modify configuration layer settings."
              python-lsp-server 'pyls
              python-formatter 'black
              python-format-on-save t
-             python-sort-imports-on-save t)
+             python-sort-imports-on-save t
+             python-test-runner 'pytest)
      fasd
      emacs-lisp
      git
@@ -49,16 +51,15 @@ This function should only modify configuration layer settings."
      shell-scripts
      org
      (shell :variables
-            shell-default-shell 'vterm
+            shell-default-shell (config-get system-type "shell-default-shell")
             shell-default-height 30
             shell-default-position 'bottom)
      treemacs
      markdown
      (lsp :variables lsp-lens-enable t)
      syntax-checking
-     ipython-notebook
+     spell-checking
      auto-completion
-     docker
      ;; themes-megapack
      ;; better-defaults
      ;; spell-checking
@@ -74,7 +75,11 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages 
+   '(
+     ;; see cursor issue: https://github.com/syl20bnr/spacemacs/issues/7112
+     (term-cursor :location (recipe :fetcher github :repo "h0d/term-cursor.el" ))
+     )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -524,7 +529,7 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; set custom file variable and create file if not existing
-  (setq custom-file (expand-file-name "custom.el" user-home-directory))
+  (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
   (write-region "" nil custom-file t)
   (load custom-file)
   )
@@ -564,11 +569,16 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
         ))
     )
 
-  ;; Set supported powerline font for vterm
-  (add-hook 'vterm-mode-hook
-            (lambda ()
-              (set (make-local-variable 'buffer-face-mode-face) '(:family "MesloLGS NF"))
-              (buffer-face-mode t)))
+  (when mac?
+    ;; Set supported powerline font for vterm
+    (add-hook 'vterm-mode-hook
+              (lambda ()
+                ;; fringe-mode minimal to remove padding
+                ;; TODO onlty change for vterm
+                ;; (fringe-mode '(1 . 1))
+                (set (make-local-variable 'buffer-face-mode-face) '(:family "MesloLGS NF"))
+                (buffer-face-mode t)))
+    )
 
   (spaceline-toggle-buffer-position-off)
   (setq lsp-disabled-clients '(mspyls))
@@ -578,6 +588,9 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
 
   (setq dotspacemacs-scratch-mode 'org-mode)
   (setq dotspacemacs-scratch-buffer-persistent t)
+
+  ;; to fix cursor issue
+  (global-term-cursor-mode)
  )
 
 ;; Do not write anything past this comment. This is where Emacs will
