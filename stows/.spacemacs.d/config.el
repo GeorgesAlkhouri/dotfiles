@@ -1,6 +1,5 @@
 (defun assoc-recursive (alist &rest keys)
   "Recursively find KEYs in ALIST"
-  (message "%s" keys)
   (while keys
     (setq alist (cdr (assoc (pop keys) alist))))
   alist)
