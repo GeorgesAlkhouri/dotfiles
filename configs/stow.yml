@@ -26,6 +26,12 @@ mac:
       path: $HOME
       stow: mac__zprezto
 
+linux-work:
+  - zprezto:
+      add: True
+      path: $HOME
+      stow: linux__work_zprezto
+
 linux-uberspace:
   - zprezto:
       add: True

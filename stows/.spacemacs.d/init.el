@@ -532,6 +532,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
   (write-region "" nil custom-file t)
   (load custom-file)
+
+  ;; set proxy when env variables are set
+  (let ((http (getenv "URL_PROXY"))
+        (username (getenv "USERNAME_PROXY"))
+        (password (getenv "PASSWORD_PROXY")))
+    (when (and http username password)
+      (message "Setting proxy...")
+      (proxy-set username password http)))
   )
 
 (defun dotspacemacs/user-load ()
