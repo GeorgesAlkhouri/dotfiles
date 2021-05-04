@@ -32,6 +32,17 @@ linux-work:
       path: $HOME
       stow: linux__work_zprezto
 
+linux-work-docker:
+  - tmuxinator:
+      add: False
+  - tmux:
+      add: False
+  - nvim:
+      add: False
+  - autoload:
+      add: False
+
+
 linux-uberspace:
   - zprezto:
       add: True
