@@ -566,7 +566,8 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
   (add-hook 'lsp-managed-mode-hook
             (lambda ()
               (when (derived-mode-p 'python-mode)
-                (setq my/flycheck-local-cache  '((lsp . ((next-checkers . (python-mypy)))))))))
+                (setq my/flycheck-local-cache  '((lsp .
+                                                      ((next-checkers . (python-flake8 python-mypy)))))))))
 
   (with-eval-after-load 'org
     (setq org-directory (expand-file-name "org" user-home-directory))
@@ -589,8 +590,11 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
     )
 
   (spaceline-toggle-buffer-position-off)
+
+  (setq flycheck-check-syntax-automatically '(save idle-buffer-switch model-enabled))
+
   (setq lsp-disabled-clients '(mspyls))
-  (setq lsp-pyls-plugins-flake8-enabled t)
+  (setq lsp-pyls-plugins-flake8-enabled nil)
   (setq lsp-pyls-plugins-pylint-enabled t)
   (setq lsp-pyls-configuration-sources ["flake8"])
 
