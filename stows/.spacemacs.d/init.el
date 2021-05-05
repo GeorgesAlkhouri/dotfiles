@@ -596,7 +596,9 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
 
   (setq dotspacemacs-scratch-mode 'org-mode)
   (setq dotspacemacs-scratch-buffer-persistent t)
-
+  ;; set git commit style
+  (setq git-commit-summary-max-length 50)
+  (setq git-commit-fill-column 72)
   ;; to fix cursor issue
   (global-term-cursor-mode)
  )
