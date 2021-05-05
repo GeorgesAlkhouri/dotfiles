@@ -59,7 +59,9 @@ This function should only modify configuration layer settings."
      (lsp :variables lsp-lens-enable t)
      syntax-checking
      spell-checking
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-sort-by-usage t)
      ;; themes-megapack
      ;; better-defaults
      ;; spell-checking
