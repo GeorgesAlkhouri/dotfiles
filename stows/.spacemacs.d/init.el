@@ -38,7 +38,7 @@ This function should only modify configuration layer settings."
    '(yaml
      (python :variables
              python-backend 'lsp
-             python-lsp-server 'pyls
+             python-lsp-server 'pyright
              python-formatter 'black
              python-format-on-save t
              python-sort-imports-on-save t
@@ -569,7 +569,7 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
             (lambda ()
               (when (derived-mode-p 'python-mode)
                 (setq my/flycheck-local-cache  '((lsp .
-                                                      ((next-checkers . (python-flake8 python-mypy)))))))))
+                                                      ((next-checkers . (python-flake8 python-pylint)))))))))
 
   (with-eval-after-load 'org
     (setq org-directory (expand-file-name "org" user-home-directory))
