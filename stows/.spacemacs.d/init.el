@@ -607,7 +607,12 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
   (setq git-commit-fill-column 72)
   ;; to fix cursor issue
   (global-term-cursor-mode)
- )
+
+  ;; TODO fix issue with lsp-ui-doc
+  ;; disable lsp-ui-doc in graphic mode
+  (when (display-graphic-p)
+    (setq lsp-ui-doc-enable nil))
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
