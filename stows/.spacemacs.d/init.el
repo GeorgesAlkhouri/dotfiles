@@ -80,7 +80,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages 
    '(
      ;; see cursor issue: https://github.com/syl20bnr/spacemacs/issues/7112
-     (term-cursor :location (recipe :fetcher github :repo "h0d/term-cursor.el" ))
+     (term-cursor :location (recipe :fetcher github :repo "h0d/term-cursor.el"))
      )
 
    ;; A list of packages that cannot be updated.
@@ -605,13 +605,13 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
   ;; set git commit style
   (setq git-commit-summary-max-length 50)
   (setq git-commit-fill-column 72)
-  ;; to fix cursor issue
-  (global-term-cursor-mode)
 
-  ;; TODO fix issue with lsp-ui-doc
-  ;; disable lsp-ui-doc in graphic mode
-  (when (display-graphic-p)
-    (setq lsp-ui-doc-enable nil))
+
+  ;; to fix cursor issue in terminal mode only
+  ;; if evaluated in graphic mode there are
+  ;; issues with flycheck
+  (when (not (display-graphic-p))
+    (global-term-cursor-mode))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
