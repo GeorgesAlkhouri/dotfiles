@@ -36,6 +36,9 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(yaml
+     (haskell :variables
+              haskell-completion-backend 'dante
+              haskell-enable-hindent t)
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pyright
@@ -593,12 +596,9 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
 
   (spaceline-toggle-buffer-position-off)
 
-  (setq flycheck-check-syntax-automatically '(save idle-buffer-switch model-enabled))
+  ;; (setq flycheck-check-syntax-automatically '(save idle-buffer-switch model-enabled))
 
   (setq lsp-disabled-clients '(mspyls))
-  (setq lsp-pyls-plugins-flake8-enabled nil)
-  (setq lsp-pyls-plugins-pylint-enabled t)
-  (setq lsp-pyls-configuration-sources ["flake8"])
 
   (setq dotspacemacs-scratch-mode 'org-mode)
   (setq dotspacemacs-scratch-buffer-persistent t)
