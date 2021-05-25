@@ -24,3 +24,6 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
 export TERM=xterm-24bit
+
+# Config setting env for Spacemacs
+export CONFIG_ENV=mac

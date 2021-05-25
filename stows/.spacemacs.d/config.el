@@ -26,9 +26,12 @@
 
 (setq config
       '(
-        (darwin
-         ("shell-default-shell" vterm))
-
         (gnu/linux
          ("shell-default-shell" ansi-term))
+
+        ("base"
+         ("shell-default-shell" ansi-term))
+
+        ("mac"
+         ("shell-default-shell" vterm))
         ))

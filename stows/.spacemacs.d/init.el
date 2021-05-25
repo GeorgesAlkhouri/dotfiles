@@ -3,6 +3,13 @@
 ;; It must be stored in your home directory.
 
 (defconst mac? (eq system-type 'darwin)  "Are we on a macOS machine?")
+(defconst config-env
+  (let ((env (getenv "CONFIG_ENV")))
+                       (if env
+                           env
+                         "base"))
+  "Environment variable for config setting")
+
 (load-file (expand-file-name "config.el" dotspacemacs-directory))
 
 (defun dotspacemacs/layers ()
@@ -54,7 +61,7 @@ This function should only modify configuration layer settings."
      shell-scripts
      org
      (shell :variables
-            shell-default-shell (config-get system-type "shell-default-shell")
+            shell-default-shell (config-get config-env "shell-default-shell")
             shell-default-height 30
             shell-default-position 'bottom)
      treemacs
@@ -572,7 +579,7 @@ lsp mode. For details see: https://github.com/flycheck/flycheck/issues/1762"
             (lambda ()
               (when (derived-mode-p 'python-mode)
                 (setq my/flycheck-local-cache  '((lsp .
-                                                      ((next-checkers . (python-flake8 python-pylint)))))))))
+                                                      ((next-checkers . (python-flake8)))))))))
 
   (with-eval-after-load 'org
     (setq org-directory (expand-file-name "org" user-home-directory))
