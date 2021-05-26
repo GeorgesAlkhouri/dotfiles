@@ -4,6 +4,8 @@
     (setq alist (cdr (assoc (pop keys) alist))))
   alist)
 
+;; TODO get default value (base) if value
+;; for key is nil
 (defun config-get (&rest keys)
   "Get config entry for KEYs"
   (car (apply 'assoc-recursive config keys))
@@ -26,12 +28,10 @@
 
 (setq config
       '(
-        (gnu/linux
-         ("shell-default-shell" ansi-term))
-
         ("base"
          ("shell-default-shell" ansi-term))
-
+        ("linux-work-docker"
+         ("shell-default-shell" ansi-term))
         ("mac"
          ("shell-default-shell" vterm))
         ))
