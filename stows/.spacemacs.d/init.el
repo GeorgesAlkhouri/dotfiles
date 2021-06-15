@@ -58,7 +58,7 @@ This function should only modify configuration layer settings."
      git
      helm
      multiple-cursors
-     shell-scripts
+     (shell-scripts :variables shell-scripts-backend 'lsp)
      org
      (shell :variables
             shell-default-shell (config-get config-env "shell-default-shell")
