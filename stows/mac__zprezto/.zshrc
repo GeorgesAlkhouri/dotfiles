@@ -30,6 +30,8 @@ alias ts='tmux new-session -s'
 
 alias i='arch -x86_64'
 
+alias ssh256="TERM=xterm-256color ssh"
+
 vterm_printf(){
     if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ] ); then
         # Tell tmux to pass the escape sequences through

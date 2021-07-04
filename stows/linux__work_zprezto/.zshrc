@@ -25,6 +25,8 @@ export PKG_CONFIG_PATH="/home/linuxbrew/.linuxbrew/opt/libnsl/lib/pkgconfig"
 set -o vi
 alias vim=nvim
 
+alias ssh256="TERM=xterm-256color ssh"
+
 alias ta='tmux attach -t'
 alias tkss='tmux kill-session -t'
 alias tksv='tmux kill-server'
