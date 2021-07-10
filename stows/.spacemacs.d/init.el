@@ -55,6 +55,7 @@ This function should only modify configuration layer settings."
              python-test-runner 'pytest)
      fasd
      emacs-lisp
+     semantic ;; Emacs dev tool, needed for formatting emacs file
      git
      helm
      multiple-cursors
