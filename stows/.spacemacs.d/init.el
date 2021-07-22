@@ -10,6 +10,8 @@
 
 (load-file (expand-file-name "config.el" dotspacemacs-directory))
 
+;; TODO dynamically set font-size value
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
